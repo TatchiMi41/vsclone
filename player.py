@@ -8,8 +8,8 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__()
         self.screen = screen
         self.image = player_sprites_R[0]
-        self.rect = self.image.get_rect()
-        self.screen_rect = screen.get_rect()
+        self.rect = self.image.get_bounding_rect()
+        self.screen_rect = screen.get_bounding_rect()
         self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
         self.health = 100

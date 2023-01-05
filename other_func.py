@@ -59,19 +59,19 @@ def collide_weapon_and_enemy(player, enemy, weapon, screen, drop_group):
     for i in enemy:
         if pygame.sprite.collide_rect(weapon, i):
             if i.rect.centerx > player.rect.centerx:
-                if weapon == Whip:
+                if weapon.title == 'Whip':
                     i.rect.centerx += 15
                 i.health -= weapon.damage
             else:
-                if weapon == Whip:
+                if weapon.title == 'Whip':
                     i.rect.centerx -= 35
                 i.health -= weapon.damage
             if i.rect.centery > player.rect.centery:
-                if weapon == Whip:
+                if weapon.title == 'Whip':
                     i.rect.centery += 15
                 i.health -= weapon.damage
             else:
-                if weapon == Whip:
+                if weapon.title == 'Whip':
                     i.rect.centery -= 15
                 i.health -= weapon.damage
         if i.health <= 0:
@@ -100,11 +100,11 @@ def check_events(screen, whip_delay, weapon_group, player, weapon):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-        if event.type == whip_delay and player.alive():
-            weapon_group.add(weapon)
-            weapon_group.update(player)
-            weapon_group.draw(screen)
-            weapon.kill()
+        # if event.type == whip_delay and player.alive():
+        #     weapon_group.add(weapon)
+        #     weapon_group.update(player)
+        #     weapon_group.draw(screen)
+        #     weapon.kill()
 
 
 def print_text(screen, massage, x, y, font_color=(0, 0, 0), font_type='timesnewromanpsmt.ttf', font_size=30):

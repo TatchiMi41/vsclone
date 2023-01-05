@@ -15,7 +15,8 @@ def game_cycle():
     global screen, clock
     anim_count_bat = 0
     anim_count_player = 0
-    # anim_count_whip = 0
+    anim_count_whip = 0
+    anim_count_garlic = 0
 
     player = Player(screen)
     player_group = pygame.sprite.Group()
@@ -23,7 +24,7 @@ def game_cycle():
     whip_group = pygame.sprite.Group()
     whip = Whip(screen, player)
     garlic = Garlic(screen, player)
-    # whip_group.add(whip)
+    whip_group.add(whip)
     drop_group = pygame.sprite.Group()
 
     bats = pygame.sprite.Group()
@@ -47,6 +48,9 @@ def game_cycle():
         player_group.draw(screen)
         player_group.update(anim_count_player)
         draw_hp_bar(screen, player)
+
+        whip_group.draw(screen)
+        whip_group.update(player, anim_count_whip)
         # pygame.draw.line(screen, GREEN, player.pos,
         #                  (player.rect.centerx + WIDTH * math.cos(player.angle), player.rect.centery))
 
@@ -66,9 +70,13 @@ def game_cycle():
         if anim_count_player == 40:
             anim_count_player = 0
 
-        # anim_count_whip += 1
-        # if anim_count_whip == 40:
-        #     anim_count_whip = 0
+        anim_count_whip += 1
+        if anim_count_whip == 100:
+            anim_count_whip = 0
+
+        anim_count_garlic += 1
+        if anim_count_garlic == 100:
+            anim_count_garlic = 0
 
         bats.update(player, anim_count_bat)
         bats.draw(screen)
@@ -88,8 +96,9 @@ def game_cycle():
             garlic.activate = True
 
         if garlic.activate:
-            garlic.update(player)
+            garlic.update(player, anim_count_garlic)
             garlic.drawing()
+            # if garlic.image.get_alpha() == 90:
             collide_weapon_and_enemy(player, bats, garlic, screen, drop_group)
             collide_weapon_and_enemy(player, bats_boss, garlic, screen, drop_group)
 
