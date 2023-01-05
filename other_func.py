@@ -77,6 +77,10 @@ def collide_weapon_and_enemy(player, enemy, weapon, screen, drop_group):
         if i.health <= 0:
             drop_group.add(Drop(screen, i.pos, i.exp, i.rank))
             player.kills += 1
+            # if player.health_lvl != 6:
+            #     player.health_lvl += 1
+            #     player.update_upgrades(player_health_multiplier)
+            #     print(player.health_lvl, player.health)
             i.kill()
 
 
@@ -96,15 +100,10 @@ def collide_enemy_and_player(player, enemy):
             player.health -= i.damage
 
 
-def check_events(screen, whip_delay, weapon_group, player, weapon):
+def check_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-        # if event.type == whip_delay and player.alive():
-        #     weapon_group.add(weapon)
-        #     weapon_group.update(player)
-        #     weapon_group.draw(screen)
-        #     weapon.kill()
 
 
 def print_text(screen, massage, x, y, font_color=(0, 0, 0), font_type='timesnewromanpsmt.ttf', font_size=30):
@@ -135,14 +134,18 @@ def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_
 
 
 def draw_hp_bar(screen, player):
-    if player.health < 100:
-        hp_bar_height = 4
-        hp_bar_width = 38
-        fill = (player.health / 100) * hp_bar_width
-        outline_rect = pygame.Rect(player.pos[0], player.pos[1] - 5, hp_bar_width, hp_bar_height)
-        fill_rect = pygame.Rect(player.pos[0], player.pos[1] - 5, fill, hp_bar_height)
-        pygame.draw.rect(screen, RED, fill_rect)
-        pygame.draw.rect(screen, BLACK, outline_rect, 1)
+    hp_bar_height = 5
+    hp_bar_width = 38
+    hp_count = [100, 120, 140, 160, 180, 200, 220]
+    fill = 100
+    for i in range(7):
+        if player.health_lvl == i:
+            fill = (player.health / hp_count[i]) * hp_bar_width
+
+    outline_rect = pygame.Rect(player.pos[0] - 3, player.pos[1] + 37, hp_bar_width, hp_bar_height)
+    fill_rect = pygame.Rect(player.pos[0] - 3, player.pos[1] + 37, fill, hp_bar_height)
+    pygame.draw.rect(screen, RED, fill_rect)
+    pygame.draw.rect(screen, BLACK, outline_rect, 1)
 
 
 def draw_lvl_bar(screen, player):
@@ -166,3 +169,13 @@ def after_death_menu(screen, player):
     print_text(screen, f'Заработано золота:   ', 357, 195, font_color=WHITE)
     back_to_menu_button = Button(button_background_red, button_background_red)
     back_to_menu_button.draw(screen, 507, 561, 'Вернуться в меню', shift=(32, 25), font_size=30)
+
+def upgades_menu(screen):
+    global bat_speed
+    bat_speed = 0
+    results_box_fill = pygame.Rect(350, 50, 600, 600)
+    results_box_outline = pygame.Rect(350, 50, 600, 600)
+    pygame.draw.rect(screen, DarkSlateBlue, results_box_fill)
+    pygame.draw.rect(screen, DarkGoldenRod, results_box_outline, 2)
+    print_text(screen, 'Выберите улучшение', 586, 84, font_color=WHITE)
+

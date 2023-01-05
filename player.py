@@ -12,7 +12,6 @@ class Player(pygame.sprite.Sprite):
         self.screen_rect = screen.get_bounding_rect()
         self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
-        self.health = 100
         self.kill_count_exp = 0
         self.lvl = 1
         self.exp = 100 * self.lvl
@@ -20,6 +19,11 @@ class Player(pygame.sprite.Sprite):
         self.hp_bar_height = 10
         self.hp_bar_width = 100
         self.kills = 0
+        self.health_lvl = 0
+        self.speed_lvl = 0
+        self.speed = player_speed * player_speed_multiplier[self.speed_lvl]
+        self.health = 100 * player_health_multiplier[self.health_lvl]
+
 
     @property
     def pos(self):
@@ -32,14 +36,14 @@ class Player(pygame.sprite.Sprite):
             self.image = player_sprites_L[anim_count_player // 10]
         keys = pygame.key.get_pressed()
         if keys[pygame.K_s]:
-            self.rect.centery += player_speed
+            self.rect.centery += self.speed
         if keys[pygame.K_w]:
-            self.rect.centery -= player_speed
+            self.rect.centery -= self.speed
         if keys[pygame.K_d]:
             self.angle = 0
-            self.rect.centerx += player_speed
+            self.rect.centerx += self.speed
         if keys[pygame.K_a]:
-            self.rect.centerx -= player_speed
+            self.rect.centerx -= self.speed
             self.angle = 180
         self.exp = 100 * self.lvl
 
@@ -52,4 +56,7 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
+
+    def update_upgrades(self, player_health_multiplier):
+        self.health = 100 * player_health_multiplier[self.health_lvl]
 

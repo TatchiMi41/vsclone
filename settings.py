@@ -18,6 +18,15 @@ player_speed = 2
 player_sprites_R = [pygame.image.load(f'img/whiper_{i}_R.png') for i in range(4)]
 player_sprites_L = [pygame.image.load(f'img/whiper_{i}_L.png') for i in range(4)]
 
+#player_stats
+player_health_multiplier = [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2]
+player_speed_multiplier = [1, 1.1, 1.2, 1.3, 1.5, 1.7, 2]
+whip_damage_multiplier = [1, 1.5, 2.4, 2.7, 3, 3.3, 3.7]
+whip_scale_multiplier = [1, 1, 1.3, 1.3, 1.7, 1.7, 2]
+garlic_damage_multiplier = [1, 1.5, 1.9, 2.3, 2.5, 2.7, 3]
+garlic_scale_multiplier = [[1, 1, 1.2, 1.2, 1.4, 1.4, 1.5]]
+
+
 #colors
 GREEN = (0, 128, 0)
 BLACK = (0, 0, 0)

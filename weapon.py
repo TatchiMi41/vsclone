@@ -13,7 +13,7 @@ class Whip(pygame.sprite.Sprite):
         self.rect = self.image.get_bounding_rect()
         self.rect.centerx, self.rect.centery = player.pos
         self.damage = 100
-        self.delay_to_attack = 1500
+        self.lvl = 0
 
     def update(self, player, anim_count_whip):
         self.rect.centery = player.rect.centery
@@ -82,7 +82,7 @@ class Garlic(pygame.sprite.Sprite):
     def __init__(self, screen, player):
         super(Garlic, self).__init__()
         self.title = 'Garlic'
-        self.activate = True
+        self.activate = False
         self.icon = garlic_icon
         self.screen = screen
         self.image = garlic_spite
@@ -102,7 +102,5 @@ class Garlic(pygame.sprite.Sprite):
         if 60 < anim_count_garlic < 81:
             self.image.set_alpha(75)
 
-
-
-    def drawing(self):
+    def draw(self):
         self.screen.blit(self.image, (self.rect.x + 20, self.rect.y + 20))

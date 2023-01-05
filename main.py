@@ -3,7 +3,6 @@ import pygame
 from other_func import *
 from items import *
 
-
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('vsc')
@@ -33,15 +32,13 @@ def game_cycle():
     damage_to_player_event = pygame.USEREVENT
     pygame.time.set_timer(damage_to_player_event, 100)
 
-    whip_delay = pygame.USEREVENT + 1
-    pygame.time.set_timer(whip_delay, whip.delay_to_attack)
-
     background = pygame.image.load('img\\background.png')
     background_rect = background.get_rect()
 
 
     running = True
     while running:
+        check_events()
 
 
         screen.blit(background, background_rect)
@@ -82,7 +79,6 @@ def game_cycle():
         bats.draw(screen)
         bats_boss.update(player, anim_count_bat)
         bats_boss.draw(screen)
-        check_events(screen, whip_delay, whip_group, player, whip)
 
         collide_weapon_and_enemy(player, bats, whip, screen, drop_group)
         collide_enemy_and_player(player, bats)
@@ -97,7 +93,7 @@ def game_cycle():
 
         if garlic.activate:
             garlic.update(player, anim_count_garlic)
-            garlic.drawing()
+            garlic.draw()
             # if garlic.image.get_alpha() == 90:
             collide_weapon_and_enemy(player, bats, garlic, screen, drop_group)
             collide_weapon_and_enemy(player, bats_boss, garlic, screen, drop_group)
