@@ -5,7 +5,6 @@ from player import *
 from settings import *
 from items import *
 
-
 class Button:
     def __init__(self, active_image, inactive_image):
         self.color = (160, 82, 45)
@@ -29,24 +28,6 @@ class Button:
             screen.blit(self.inactive_image, (x, y))
 
         print_text(screen, massage, x + shift[0], y + shift[1], font_size=font_size, font_color=WHITE)
-
-
-def show_menu(screen, clock, game_cycle):
-    start_button = Button(button_background, button_background)
-    quit_button = Button(button_background_red, button_background_red)
-
-    menu_running = True
-    while menu_running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                exit()
-
-        screen.blit(menu_background, (0, 0))
-        screen.blit(pygame.image.load('img/title.png'), (500, 50))
-        start_button.draw(screen, 525, 275, 'Начать', game_cycle)
-        quit_button.draw(screen, 525, 375, 'Выйти', shift=(80, 10), action=exit)
-        pygame.display.update()
-        clock.tick(60)
 
 
 def game_UI(screen, player):
@@ -170,12 +151,22 @@ def after_death_menu(screen, player):
     back_to_menu_button = Button(button_background_red, button_background_red)
     back_to_menu_button.draw(screen, 507, 561, 'Вернуться в меню', shift=(32, 25), font_size=30)
 
+
+def lvl_up(screen, player):
+    if player.kill_count_exp >= player.exp:
+        upgades_menu(screen)
+
+        # player.lvl += 1
+        # player.kill_count_exp = 0
+
+
 def upgades_menu(screen):
-    global bat_speed
-    bat_speed = 0
     results_box_fill = pygame.Rect(350, 50, 600, 600)
     results_box_outline = pygame.Rect(350, 50, 600, 600)
     pygame.draw.rect(screen, DarkSlateBlue, results_box_fill)
     pygame.draw.rect(screen, DarkGoldenRod, results_box_outline, 2)
     print_text(screen, 'Выберите улучшение', 586, 84, font_color=WHITE)
-
+    speed_update_button = Button(speed_upgrade_button_img, speed_upgrade_button_img)
+    speed_update_button.draw(screen, 537, 140, 'Увеличивает скорость бега на 10%')
+    hp_upgrade_button = Button(hp_upgrade_button_img, hp_upgrade_button_img)
+    hp_upgrade_button.draw(screen, 537, 340, 'Увеличиват количество хп на 20%')

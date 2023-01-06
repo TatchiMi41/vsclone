@@ -98,15 +98,35 @@ def game_cycle():
             collide_weapon_and_enemy(player, bats, garlic, screen, drop_group)
             collide_weapon_and_enemy(player, bats_boss, garlic, screen, drop_group)
 
-        if player.kill_count_exp >= player.exp:
-            player.lvl += 1
-            player.kill_count_exp = 0
+        # if player.kill_count_exp >= player.exp:
+        #     player.lvl += 1
+        #     player.kill_count_exp = 0
+        #     upgades_menu(screen)
+        lvl_up(screen, player)
+
         check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group)
 
         game_UI(screen, player)
 
         pygame.display.flip()
         clock.tick(FPS)
+
+def show_menu(game_cycle):
+    start_button = Button(button_background, button_background)
+    quit_button = Button(button_background_red, button_background_red)
+
+    menu_running = True
+    while menu_running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()
+
+        screen.blit(menu_background, (0, 0))
+        screen.blit(pygame.image.load('img/title.png'), (500, 50))
+        start_button.draw(screen, 525, 275, 'Начать', game_cycle)
+        quit_button.draw(screen, 525, 375, 'Выйти', shift=(80, 10), action=exit)
+        pygame.display.update()
+        clock.tick(60)
 
 # def game_process(screen, clock):
 #     global game, menu
@@ -119,4 +139,4 @@ def game_cycle():
 #         if menu:
 #             show_menu(screen, clock)
 
-show_menu(screen, clock, game_cycle)
+show_menu(game_cycle)
