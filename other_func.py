@@ -6,7 +6,7 @@ from settings import *
 from items import *
 
 class Button:
-    def __init__(self, active_image, inactive_image):
+    def __init__(self, active_image, inactive_image, button_name):
         self.color = (160, 82, 45)
         self.active_image = active_image
         self.rect_active = self.active_image.get_rect()
@@ -14,8 +14,9 @@ class Button:
         self.height = self.rect_active.height
         self.inactive_image = inactive_image
         self.rect_inacrive_image = inactive_image
+        self.name = button_name
 
-    def draw(self, screen, x, y, massage, action=None, font_size=50, shift=(75, 10)):
+    def draw(self, screen, x, y, massage, action=None, font_size=50, shift=(75, 10), action2=None):
         cursor = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         if x < cursor[0] < x + self.width and y < cursor[1] < y + self.height:
@@ -24,6 +25,8 @@ class Button:
             if click[0]:
                 if action is not None:
                     action()
+                if action2 is not None:
+                    action2()
         else:
             screen.blit(self.inactive_image, (x, y))
 
@@ -93,9 +96,9 @@ def print_text(screen, massage, x, y, font_color=(0, 0, 0), font_type='timesnewr
     screen.blit(text, (x, y))
 
 
-def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group):
+def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group, game_switch, whip):
     if player.health <= 0:
-        after_death_menu(screen, player)
+        after_death_menu(screen, player, game_switch)
         player.kill()
         bats.empty()
         whip_group.empty()
@@ -103,14 +106,19 @@ def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_
         drop_group.empty()
 
         def restart_game():
-            nonlocal player, player_group
+            nonlocal player, player_group, whip
             player_group.add(player)
+            whip_group.add(whip)
             player.health = 100
             player.lvl = 1
             player.kill_count_exp = 0
             player.kills = 0
+            player.rect.x = WIDTH//2
+            player.rect.y = HEIGHT//2
 
-        restart_button = Button(button_background, button_background)
+        back_to_menu_button = Button(button_background_red, button_background_red, 'back_to_menu')
+        back_to_menu_button.draw(screen, 507, 561, 'Вернуться в меню', shift=(32, 25), font_size=30, action=game_switch, action2=restart_game)
+        restart_button = Button(button_background, button_background, 'restart_button')
         restart_button.draw(screen, 507, 461, 'Начать заново', shift=(55, 23), font_size=30, action=restart_game)
 
 
@@ -139,7 +147,7 @@ def draw_lvl_bar(screen, player):
     pygame.draw.rect(screen, BLACK, outline_rect, 2)
 
 
-def after_death_menu(screen, player):
+def after_death_menu(screen, player, game_switch):
     results_box_fill = pygame.Rect(350, 50, 600, 600)
     results_box_outline = pygame.Rect(350, 50, 600, 600)
     pygame.draw.rect(screen, DarkSlateBlue, results_box_fill)
@@ -148,25 +156,31 @@ def after_death_menu(screen, player):
     print_text(screen, f'Убито врагов:  {player.kills}', 357, 140, font_color=WHITE)
     print_text(screen, f'Уровень:   {player.lvl}', 357, 166, font_color=WHITE)
     print_text(screen, f'Заработано золота:   ', 357, 195, font_color=WHITE)
-    back_to_menu_button = Button(button_background_red, button_background_red)
-    back_to_menu_button.draw(screen, 507, 561, 'Вернуться в меню', shift=(32, 25), font_size=30)
 
 
-def lvl_up(screen, player):
+def lvl_up(screen, player, bats, bats_boss):
     if player.kill_count_exp >= player.exp:
-        upgades_menu(screen)
+        upgades_menu(screen, bats, bats_boss)
 
         # player.lvl += 1
         # player.kill_count_exp = 0
 
 
-def upgades_menu(screen):
+def upgades_menu(screen, bats, bats_boss):
+    for i in bats:
+        i.speed = 0
+    for i in bats_boss:
+        i.speed = 0
     results_box_fill = pygame.Rect(350, 50, 600, 600)
     results_box_outline = pygame.Rect(350, 50, 600, 600)
     pygame.draw.rect(screen, DarkSlateBlue, results_box_fill)
     pygame.draw.rect(screen, DarkGoldenRod, results_box_outline, 2)
     print_text(screen, 'Выберите улучшение', 586, 84, font_color=WHITE)
-    speed_update_button = Button(speed_upgrade_button_img, speed_upgrade_button_img)
-    speed_update_button.draw(screen, 537, 140, 'Увеличивает скорость бега на 10%')
-    hp_upgrade_button = Button(hp_upgrade_button_img, hp_upgrade_button_img)
+    speed_update_button = Button(speed_upgrade_button_img, speed_upgrade_button_img, 'speed_update_button')
+    speed_update_button.draw(screen, 537, 140, 'Увеличивает скорость бега на 10%',)
+    hp_upgrade_button = Button(hp_upgrade_button_img, hp_upgrade_button_img, 'speed_update_button')
     hp_upgrade_button.draw(screen, 537, 340, 'Увеличиват количество хп на 20%')
+
+def upgrades_apply(button, player):
+    if button.name == 'speed_update_button':
+        player.speed_lvl += 1

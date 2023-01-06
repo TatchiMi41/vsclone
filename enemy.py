@@ -12,9 +12,10 @@ class Bat(pygame.sprite.Sprite):
         self.rect.centerx = random.choice([random.randint(1281, 1300), random.randint(1159, 1279) - 1280])
         self.rect.centery = random.choice([random.randint(721, 760), random.randint(619, 719) - 720])
         self.damage = 1
-        self.exp = 10
+        self.exp = 100
         self.health = 100
         self.rank = 'common'
+        self.speed = bat_speed
 
     @property
     def pos(self):
@@ -28,12 +29,12 @@ class Bat(pygame.sprite.Sprite):
         delta_x = player.rect.centerx - self.rect.centerx
         delta_y = player.rect.centery - self.rect.centery
         enemy_move_x = abs(delta_x) > abs(delta_y)
-        if abs(delta_x) > bat_speed and abs(delta_x) > bat_speed:
+        if abs(delta_x) > self.speed and abs(delta_x) > self.speed:
             enemy_move_x = random.random() < 0.5
         if enemy_move_x:
-            self.rect.centerx += min(delta_x, bat_speed) if delta_x > 0 else max(delta_x, -bat_speed)
+            self.rect.centerx += min(delta_x, self.speed) if delta_x > 0 else max(delta_x, -self.speed)
         else:
-            self.rect.centery += min(delta_y, bat_speed) if delta_y > 0 else max(delta_y, -bat_speed)
+            self.rect.centery += min(delta_y, self.speed) if delta_y > 0 else max(delta_y, -self.speed)
 
     #
     # def draw(self):
@@ -53,6 +54,7 @@ class Bat_boss(pygame.sprite.Sprite):
         self.damage = 1
         self.exp = 100
         self.rank = 'common'
+        self.speed = bat_speed
 
     @property
     def pos(self):
@@ -66,9 +68,9 @@ class Bat_boss(pygame.sprite.Sprite):
         delta_x = player.rect.centerx - self.rect.centerx
         delta_y = player.rect.centery - self.rect.centery
         enemy_move_x = abs(delta_x) > abs(delta_y)
-        if abs(delta_x) > bat_speed and abs(delta_x) > bat_speed:
+        if abs(delta_x) > self.speed and abs(delta_x) > self.speed:
             enemy_move_x = random.random() < 0.5
         if enemy_move_x:
-            self.rect.centerx += min(delta_x, bat_speed) if delta_x > 0 else max(delta_x, -bat_speed)
+            self.rect.centerx += min(delta_x, self.speed) if delta_x > 0 else max(delta_x, -self.speed)
         else:
-            self.rect.centery += min(delta_y, bat_speed) if delta_y > 0 else max(delta_y, -bat_speed)
+            self.rect.centery += min(delta_y, self.speed) if delta_y > 0 else max(delta_y, -self.speed)
