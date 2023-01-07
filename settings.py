@@ -29,6 +29,9 @@ garlic_scale_multiplier = [1, 1, 1.2, 1.2, 1.4, 1.4, 1.5]
 
 hp_upgrade_button_img = pygame.image.load(f'img/hp_upgrade_button.png')
 speed_upgrade_button_img = pygame.image.load(f'img/speed_upgrade.png')
+whip_upgrade_button_img = pygame.image.load(f'img/whip_upgrade_button.png')
+garlic_upgrade_button_img = pygame.image.load(f'img/garlic_upgrade.png')
+fire_ward_upgrade_button_img = pygame.image.load(f'img/fire_wand_upgrade_button.png')
 
 #colors
 GREEN = (0, 128, 0)

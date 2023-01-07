@@ -1,4 +1,5 @@
 import pygame
+from dataclasses import dataclass
 
 from other_func import *
 from items import *
@@ -34,6 +35,8 @@ pygame.time.set_timer(damage_to_player_event, 100)
 background = pygame.image.load('img\\background.png')
 background_rect = background.get_rect()
 
+scroll = [0, 0]
+
 
 def menu_game_switch():
     global menu, game
@@ -50,6 +53,7 @@ def show_game():
     check_events()
 
 
+    # screen.blit(background, (background_rect.x - scroll[0], background_rect.y - scroll[1]))
     screen.blit(background, background_rect)
     player_group.draw(screen)
     player_group.update(anim_count_player)
@@ -111,7 +115,7 @@ def show_game():
     #     player.lvl += 1
     #     player.kill_count_exp = 0
     #     upgades_menu(screen)
-    lvl_up(screen, player, bats, bats_boss)
+    lvl_up(screen, player, bats, bats_boss, whip)
 
     check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group, menu_game_switch, whip)
 
@@ -121,8 +125,8 @@ def show_game():
     clock.tick(FPS)
 
 def show_menu():
-    start_button = Button(button_background, button_background, 'start_button')
-    quit_button = Button(button_background_red, button_background_red, 'quit_button')
+    start_button = Button(button_background, button_background)
+    quit_button = Button(button_background_red, button_background_red)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

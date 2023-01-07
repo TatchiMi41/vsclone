@@ -6,7 +6,7 @@ from settings import *
 from items import *
 
 class Button:
-    def __init__(self, active_image, inactive_image, button_name):
+    def __init__(self, active_image, inactive_image):
         self.color = (160, 82, 45)
         self.active_image = active_image
         self.rect_active = self.active_image.get_rect()
@@ -14,7 +14,6 @@ class Button:
         self.height = self.rect_active.height
         self.inactive_image = inactive_image
         self.rect_inacrive_image = inactive_image
-        self.name = button_name
 
     def draw(self, screen, x, y, massage, action=None, font_size=50, shift=(75, 10), action2=None):
         cursor = pygame.mouse.get_pos()
@@ -116,9 +115,9 @@ def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_
             player.rect.x = WIDTH//2
             player.rect.y = HEIGHT//2
 
-        back_to_menu_button = Button(button_background_red, button_background_red, 'back_to_menu')
+        back_to_menu_button = Button(button_background_red, button_background_red)
         back_to_menu_button.draw(screen, 507, 561, 'Вернуться в меню', shift=(32, 25), font_size=30, action=game_switch, action2=restart_game)
-        restart_button = Button(button_background, button_background, 'restart_button')
+        restart_button = Button(button_background, button_background)
         restart_button.draw(screen, 507, 461, 'Начать заново', shift=(55, 23), font_size=30, action=restart_game)
 
 
@@ -158,15 +157,49 @@ def after_death_menu(screen, player, game_switch):
     print_text(screen, f'Заработано золота:   ', 357, 195, font_color=WHITE)
 
 
-def lvl_up(screen, player, bats, bats_boss):
+def lvl_up(screen, player, bats, bats_boss, whip):
+    print(whip.damage)
     if player.kill_count_exp >= player.exp:
-        upgades_menu(screen, bats, bats_boss)
-
-        # player.lvl += 1
-        # player.kill_count_exp = 0
+        upgades_menu(screen, bats, bats_boss, player, whip)
 
 
-def upgades_menu(screen, bats, bats_boss):
+def upgades_menu(screen, bats, bats_boss, player, whip):
+    def upgrade_hp():
+        nonlocal player
+        if player.health_lvl < 7:
+            player.health_lvl += 1
+            player.update_upgrades(player_health_multiplier, 'health')
+            player.lvl += 1
+            player.kill_count_exp = 0
+            for i in bats:
+                i.speed = bat_speed
+            for i in bats_boss:
+                i.speed = bat_speed
+
+    def upgrade_speed():
+        nonlocal player
+        if player.speed_lvl < 7:
+            player.speed_lvl += 1
+            player.update_upgrades(player_speed_multiplier, 'speed')
+            player.lvl += 1
+            player.kill_count_exp = 0
+            for i in bats:
+                i.speed = bat_speed
+            for i in bats_boss:
+                i.speed = bat_speed
+
+    def upgrade_whip():
+        nonlocal whip
+        if whip.lvl < 7:
+            whip.lvl += 1
+            whip.update_upgrades(player_speed_multiplier)
+            player.lvl += 1
+            player.kill_count_exp = 0
+            for i in bats:
+                i.speed = bat_speed
+            for i in bats_boss:
+                i.speed = bat_speed
+
     for i in bats:
         i.speed = 0
     for i in bats_boss:
@@ -176,11 +209,12 @@ def upgades_menu(screen, bats, bats_boss):
     pygame.draw.rect(screen, DarkSlateBlue, results_box_fill)
     pygame.draw.rect(screen, DarkGoldenRod, results_box_outline, 2)
     print_text(screen, 'Выберите улучшение', 586, 84, font_color=WHITE)
-    speed_update_button = Button(speed_upgrade_button_img, speed_upgrade_button_img, 'speed_update_button')
-    speed_update_button.draw(screen, 537, 140, 'Увеличивает скорость бега на 10%',)
-    hp_upgrade_button = Button(hp_upgrade_button_img, hp_upgrade_button_img, 'speed_update_button')
-    hp_upgrade_button.draw(screen, 537, 340, 'Увеличиват количество хп на 20%')
+    speed_upgrade_button = Button(speed_upgrade_button_img, speed_upgrade_button_img)
+    speed_upgrade_button.draw(screen, 352, 140, massage=None, action=upgrade_speed, font_size=30)
+    hp_upgrade_button = Button(hp_upgrade_button_img, hp_upgrade_button_img)
+    hp_upgrade_button.draw(screen, 352, 280, massage=None, action=upgrade_hp, font_size=30)
+    whip_upgrade_button = Button(whip_upgrade_button_img, whip_upgrade_button_img)
+    whip_upgrade_button.draw(screen, 352, 420, massage=None, action=upgrade_whip, font_size=30)
+    garlic_upgrade_button = Button(garlic_upgrade_button_img, garlic_upgrade_button_img)
+    fire_wand_upgrade_button = Button(fire_ward_upgrade_button_img, fire_ward_upgrade_button_img)
 
-def upgrades_apply(button, player):
-    if button.name == 'speed_update_button':
-        player.speed_lvl += 1

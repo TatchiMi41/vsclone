@@ -57,6 +57,9 @@ class Player(pygame.sprite.Sprite):
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
-    def update_upgrades(self, player_health_multiplier):
-        self.health = 100 * player_health_multiplier[self.health_lvl]
+    def update_upgrades(self, player_multiplier, type_upg):
+        if type_upg == 'health':
+            self.health = 100 * player_multiplier[self.health_lvl]
+        elif type_upg == 'speed':
+            self.speed_lvl = player_speed * player_multiplier[self.speed_lvl]
 
