@@ -1,5 +1,6 @@
+import pygame.transform
+
 from settings import *
-import math
 import random
 
 
@@ -12,7 +13,7 @@ class Bat(pygame.sprite.Sprite):
         self.rect.centerx = random.choice([random.randint(1281, 1300), random.randint(1159, 1279) - 1280])
         self.rect.centery = random.choice([random.randint(721, 760), random.randint(619, 719) - 720])
         self.damage = 1
-        self.exp = 100
+        self.exp = 10
         self.health = 100
         self.rank = 'common'
         self.speed = bat_speed
@@ -36,11 +37,6 @@ class Bat(pygame.sprite.Sprite):
         else:
             self.rect.centery += min(delta_y, self.speed) if delta_y > 0 else max(delta_y, -self.speed)
 
-    #
-    # def draw(self):
-    #     self.image = bat_sprites_R[0]
-    #     self.screen.blit(self.image, self.rect)
-
 
 class Bat_boss(pygame.sprite.Sprite):
     def __init__(self, screen, player):
@@ -58,7 +54,7 @@ class Bat_boss(pygame.sprite.Sprite):
 
     @property
     def pos(self):
-        return (self.rect.centerx, self.rect.centery)
+        return self.rect.centerx, self.rect.centery
 
     def update(self, player, anim_count_bat):
         if self.rect.centerx > player.rect.centerx:
@@ -74,6 +70,7 @@ class Bat_boss(pygame.sprite.Sprite):
             self.rect.centerx += float(min(delta_x, self.speed)) if delta_x > 0 else float(max(delta_x, -self.speed))
         else:
             self.rect.centery += float(min(delta_y, self.speed)) if delta_y > 0 else float(max(delta_y, -self.speed))
+
 
 class Zombie(pygame.sprite.Sprite):
     def __init__(self, screen):
@@ -91,13 +88,13 @@ class Zombie(pygame.sprite.Sprite):
 
     @property
     def pos(self):
-        return (self.rect.centerx, self.rect.centery)
+        return self.rect.centerx, self.rect.centery
 
     def update(self, player, anim_count_bat):
         if self.rect.centerx > player.rect.centerx:
             self.image = zombie1_sprites[int(anim_count_bat // 10)]
         else:
-            self.image = zombie1_sprites[int(anim_count_bat // 10)]
+            self.image = pygame.transform.flip(zombie1_sprites[int(anim_count_bat // 10)], True, False)
         delta_x = player.rect.centerx - self.rect.centerx
         delta_y = player.rect.centery - self.rect.centery
         enemy_move_x = abs(delta_x) > abs(delta_y)

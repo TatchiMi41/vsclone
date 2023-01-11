@@ -1,6 +1,3 @@
-import random
-import math
-
 from enemy import *
 import pygame
 
@@ -92,7 +89,7 @@ class Garlic(pygame.sprite.Sprite):
     def __init__(self, screen, player):
         super(Garlic, self).__init__()
         self.title = 'Garlic'
-        self.activate = True
+        self.activate = False
         self.icon = garlic_icon
         self.screen = screen
         self.image = garlic_spite
@@ -105,43 +102,16 @@ class Garlic(pygame.sprite.Sprite):
         self.rect.centerx, self.rect.centery = player.pos
         if 0 <= anim_count_garlic < 11 or 80 < anim_count_garlic < 101:
             self.image.set_alpha(90)
+            self.damage = 100
         if 10 < anim_count_garlic < 21:
             self.image.set_alpha(75)
+            self.damage = 0
         if 20 < anim_count_garlic < 61:
             self.image.set_alpha(60)
+            self.damage = 0
         if 60 < anim_count_garlic < 81:
             self.image.set_alpha(75)
+            self.damage = 0
 
     def draw(self):
         self.screen.blit(self.image, (self.rect.x + 20, self.rect.y + 20))
-
-
-class Magic_Wand(pygame.sprite.Sprite):
-    def __init__(self, screen, player, target):
-        super(Magic_Wand, self).__init__()
-        self.title = 'Magic Wand'
-        self.activate = False
-        self.icon = fire_wand_icon
-        self.screen = screen
-        self.image = magic_wand_sprite
-        self.rect = self.image.get_bounding_rect()
-        self.rect.centerx, self.rect.centery = player.pos
-        self.target = target
-        self.damage = 100
-        self.lvl = 0
-        self.speed = 2
-        self.health = 100
-
-    def update(self):
-        dx = self.target.rect.centerx - self.rect.centerx
-        dy = self.target.rect.centery - self.rect.centery
-        rads = math.atan2(-dy, dx)
-        rads %= 2*math.pi
-        degs = math.degrees(rads)
-        self.rect.centerx += self.speed * math.cos(rads)
-        self.rect.centery -= self.speed * math.sin(rads)
-        self.image = pygame.transform.rotate(magic_wand_sprite, degs)
-
-    def update_upgrades(self, type_upg):
-        if type_upg == 'damage':
-            self.activate = True

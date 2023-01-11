@@ -74,4 +74,3 @@ magic_wand_icon = pygame.image.load(f'img/magic_wand_icon.png')
 whip_icon = pygame.image.load(f'img/whip_icon.png')
 fire_wand_icon = pygame.image.load(f'img/fire_wand_icon.png')
 chest = pygame.image.load(f'img/chest.png')
-

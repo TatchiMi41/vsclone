@@ -1,6 +1,5 @@
 from settings import *
 import pygame
-import math
 
 
 class Player(pygame.sprite.Sprite):
@@ -19,11 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.hp_bar_height = 10
         self.hp_bar_width = 100
         self.kills = 0
-        self.health_lvl = 6
-        self.speed_lvl = 6
+        self.health_lvl = 0
+        self.speed_lvl = 0
         self.speed = player_speed * player_speed_multiplier[self.speed_lvl]
         self.health = 100 * player_health_multiplier[self.health_lvl]
-
 
     @property
     def pos(self):
@@ -62,4 +60,3 @@ class Player(pygame.sprite.Sprite):
             self.health = 100 * player_multiplier[self.health_lvl]
         elif type_upg == 'speed':
             self.speed = player_speed * player_multiplier[self.speed_lvl]
-

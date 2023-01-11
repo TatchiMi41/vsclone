@@ -9,6 +9,7 @@ from items import *
 update_menu_flag = True
 new_upgrade_pool = []
 
+
 class Button:
     def __init__(self, active_image, inactive_image, name):
         self.color = (160, 82, 45)
@@ -44,39 +45,31 @@ def game_UI(screen, player):
 
 
 def collide_weapon_and_enemy(player, enemy, weapon, screen, drop_group):
-        for i in enemy:
-            if pygame.sprite.collide_rect(weapon, i):
-                if i.rect.centerx > player.rect.centerx:
-                    if weapon.title == 'Whip':
-                        i.rect.centerx += 15
-                    i.health -= weapon.damage
-                    if weapon.title == 'Magic Wand':
-                        weapon.kill()
-                else:
-                    if weapon.title == 'Whip':
-                        i.rect.centerx -= 35
-                    i.health -= weapon.damage
-                    if weapon.title == 'Magic Wand':
-                        weapon.kill()
-                if i.rect.centery > player.rect.centery:
-                    if weapon.title == 'Whip':
-                        i.rect.centery += 15
-                    i.health -= weapon.damage
-                    if weapon.title == 'Magic Wand':
-                        weapon.kill()
-                else:
-                    if weapon.title == 'Whip':
-                        i.rect.centery -= 15
-                    i.health -= weapon.damage
-                    if weapon.title == 'Magic Wand':
-                        weapon.kill()
-            if i.health <= 0:
-                if i.rank == 'common':
-                    drop_group.add(Drop(screen, i.pos, i.exp, i.rank))
-                else:
-                    drop_group.add(Drop(screen, i.pos, i.exp, i.rank))
-                player.kills += 1
-                i.kill()
+    for i in enemy:
+        if pygame.sprite.collide_rect(weapon, i):
+            if i.rect.centerx > player.rect.centerx:
+                if weapon.title == 'Whip':
+                    i.rect.centerx += 15
+                i.health -= weapon.damage
+            else:
+                if weapon.title == 'Whip':
+                    i.rect.centerx -= 35
+                i.health -= weapon.damage
+            if i.rect.centery > player.rect.centery:
+                if weapon.title == 'Whip':
+                    i.rect.centery += 15
+                i.health -= weapon.damage
+            else:
+                if weapon.title == 'Whip':
+                    i.rect.centery -= 15
+                i.health -= weapon.damage
+        if i.health <= 0:
+            if i.rank == 'common':
+                drop_group.add(Drop(screen, i.pos, i.exp, i.rank))
+            else:
+                drop_group.add(Drop(screen, i.pos, i.exp, i.rank))
+            player.kills += 1
+            i.kill()
 
 
 def collide_drop(player, drops):
@@ -95,6 +88,7 @@ def collide_enemy_and_player(player, enemy):
         if pygame.sprite.collide_rect(player, i):
             player.health -= i.damage
 
+
 def check_in_window(weapon):
     if weapon.rect.left > WIDTH or weapon.rect.right < 0 or weapon.rect.bottom < 0 or weapon.rect.top > HEIGHT:
         weapon.kill()
@@ -106,7 +100,8 @@ def print_text(screen, massage, x, y, font_color=(0, 0, 0), font_type='timesnewr
     screen.blit(text, (x, y))
 
 
-def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group, game_switch, whip, other_weapon_group):
+def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group, game_switch, whip,
+                other_weapon_group):
     if player.health <= 0:
         after_death_menu(screen, player)
         player.kill()
@@ -167,16 +162,16 @@ def after_death_menu(screen, player, ):
     print_text(screen, 'Результаты', 586, 84, font_color=WHITE)
     print_text(screen, f'Убито врагов:  {player.kills}', 357, 140, font_color=WHITE)
     print_text(screen, f'Уровень:   {player.lvl}', 357, 166, font_color=WHITE)
-    print_text(screen, f'Время жизни:   ', 357, 195, font_color=WHITE)
 
 
-def lvl_up(screen, player, bats, bats_boss, zombies, whip, magic_wand, garlic):
+def lvl_up(screen, player, bats, bats_boss, zombies, whip, garlic):
     if player.kill_count_exp >= player.exp:
-        upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, garlic)
+        upgrades_menu(screen, bats, bats_boss, zombies, player, whip, garlic)
 
 
-def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, garlic):
+def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, garlic):
     global update_menu_flag, new_upgrade_pool
+
     def upgrade_hp():
         global update_menu_flag
         nonlocal player
@@ -185,12 +180,12 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
             player.update_upgrades(player_health_multiplier, 'health')
             player.lvl += 1
             player.kill_count_exp = 0
-            for i in bats:
-                i.speed = bat_speed
-            for i in bats_boss:
-                i.speed = bat_speed
-            for i in zombies:
-                i.speed = bat_speed
+            for bat in bats:
+                bat.speed = bat_speed
+            for bat in bats_boss:
+                bat.speed = bat_speed
+            for bat in zombies:
+                bat.speed = bat_speed
         update_menu_flag = True
 
     def upgrade_speed():
@@ -201,12 +196,12 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
             player.update_upgrades(player_speed_multiplier, 'speed')
             player.lvl += 1
             player.kill_count_exp = 0
-            for i in bats:
-                i.speed = bat_speed
-            for i in bats_boss:
-                i.speed = bat_speed
-            for i in zombies:
-                i.speed = bat_speed
+            for bat in bats:
+                bat.speed = bat_speed
+            for bat in bats_boss:
+                bat.speed = bat_speed
+            for bat in zombies:
+                bat.speed = bat_speed
         update_menu_flag = True
 
     def upgrade_whip():
@@ -218,41 +213,25 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
             whip.update_upgrades(whip_scale_multiplier, 'scale')
             player.lvl += 1
             player.kill_count_exp = 0
-            for i in bats:
-                i.speed = bat_speed
-            for i in bats_boss:
-                i.speed = bat_speed
-            for i in zombies:
-                i.speed = bat_speed
+            for bat in bats:
+                bat.speed = bat_speed
+            for bat in bats_boss:
+                bat.speed = bat_speed
+            for bat in zombies:
+                bat.speed = bat_speed
         update_menu_flag = True
 
     def max_upgrades():
         global update_menu_flag
         player.lvl += 1
         player.kill_count_exp = 0
-        for i in bats:
-            i.speed = bat_speed
-        for i in bats_boss:
-            i.speed = bat_speed
-        for i in zombies:
-            i.speed = bat_speed
+        for bat in bats:
+            bat.speed = bat_speed
+        for bat in bats_boss:
+            bat.speed = bat_speed
+        for bat in zombies:
+            bat.speed = bat_speed
         update_menu_flag = True
-
-    # def upgrade_magic_wand():
-    #     global update_menu_flag
-    #     nonlocal magic_wand
-    #     if magic_wand.lvl < 7:
-    #         magic_wand.lvl += 1
-    #         magic_wand.update_upgrades('damage')
-    #         player.lvl += 1
-    #         player.kill_count_exp = 0
-    #         for i in bats:
-    #             i.speed = bat_speed
-    #         for i in bats_boss:
-    #             i.speed = bat_speed
-    #         for i in zombies:
-    #             i.speed = bat_speed
-    #     update_menu_flag = True
 
     def upgrade_garlic():
         global update_menu_flag
@@ -260,16 +239,15 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
         if garlic.lvl < 7:
             garlic.lvl += 1
             garlic.activate = True
-            player.lvl +=1
+            player.lvl += 1
             player.kill_count_exp = 0
-            for i in bats:
-                i.speed = bat_speed
-            for i in bats_boss:
-                i.speed = bat_speed
-            for i in zombies:
-                i.speed = bat_speed
+            for bat in bats:
+                bat.speed = bat_speed
+            for bat in bats_boss:
+                bat.speed = bat_speed
+            for bat in zombies:
+                bat.speed = bat_speed
         update_menu_flag = True
-
 
     for i in bats:
         i.speed = 0
@@ -288,13 +266,9 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
     hp_upgrade_button = Button(hp_upgrade_button_img, hp_upgrade_button_img, 'hp_upgrade_button')
     whip_upgrade_button = Button(whip_upgrade_button_img, whip_upgrade_button_img, 'whip_upgrade_button')
     garlic_upgrade_button = Button(garlic_upgrade_button_img, garlic_upgrade_button_img, 'garlic_upgrade_button')
-    # fire_wand_upgrade_button = Button(fire_ward_upgrade_button_img, fire_ward_upgrade_button_img,
-    #                                   'fire_wand_upgrade_button')
-    # magic_wand_upgrade_button = Button(magic_wand_upgrade_button_img, magic_wand_upgrade_button_img,
-    #                                    'magic_wand_upgrade_button')
     upgrade_pool = [speed_upgrade_button, hp_upgrade_button, whip_upgrade_button, garlic_upgrade_button]
-                    # fire_wand_upgrade_button, magic_wand_upgrade_button]
-    if garlic.activate == True:
+
+    if garlic.activate is True:
         upgrade_pool.remove(garlic_upgrade_button)
     if whip.lvl >= 6:
         upgrade_pool.remove(whip_upgrade_button)
@@ -302,18 +276,19 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
         upgrade_pool.remove(speed_upgrade_button)
     if player.health_lvl >= 6:
         upgrade_pool.remove(hp_upgrade_button)
-    if player.health_lvl >= 6 and player.speed_lvl >= 6 and whip.lvl >= 6 and garlic.activate == True:
+    if player.health_lvl >= 6 and player.speed_lvl >= 6 and whip.lvl >= 6 and garlic.activate is True:
         update_menu_flag = False
 
-    if update_menu_flag and len(upgrade_pool) > 2:
+    if update_menu_flag is True and len(upgrade_pool) > 2:
         new_upgrade_pool = random.sample(upgrade_pool, k=3)
-    elif update_menu_flag and (len(upgrade_pool) == 2):
+        update_menu_flag = False
+    elif update_menu_flag is True and (len(upgrade_pool) == 2):
         new_upgrade_pool = random.sample(upgrade_pool, k=2)
-    elif update_menu_flag and (len(upgrade_pool) == 1):
+        update_menu_flag = False
+    elif update_menu_flag is True and (len(upgrade_pool) == 1):
         new_upgrade_pool = upgrade_pool
 
-
-    if upgrade_pool != []:
+    if upgrade_pool:
         if len(new_upgrade_pool) == 3:
             for i in range(3):
                 if i == 0:
@@ -322,33 +297,27 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
                     elif new_upgrade_pool[i].name == 'hp_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_hp, font_size=30)
                     elif new_upgrade_pool[i].name == 'whip_upgrade_button':
-                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_whip, font_size=30)
+                        new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_whip, font_size=30)
                     elif new_upgrade_pool[i].name == 'garlic_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_garlic, font_size=30)
-                    # else:
-                    #     new_upgrade_pool[i].draw(screen, 352, 140, massage='Hi')
                 elif i == 1:
                     if new_upgrade_pool[i].name == 'speed_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_speed, font_size=30)
                     elif new_upgrade_pool[i].name == 'hp_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_hp, font_size=30)
                     elif new_upgrade_pool[i].name == 'whip_upgrade_button':
-                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_whip, font_size=30)
+                        new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_whip, font_size=30)
                     elif new_upgrade_pool[i].name == 'garlic_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_garlic, font_size=30)
-                    # else:
-                    #     new_upgrade_pool[i].draw(screen, 352, 280, massage='Hi')
                 elif i == 2:
                     if new_upgrade_pool[i].name == 'speed_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 420, massage=None, action=upgrade_speed, font_size=30)
                     elif new_upgrade_pool[i].name == 'hp_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 420, massage=None, action=upgrade_hp, font_size=30)
                     elif new_upgrade_pool[i].name == 'whip_upgrade_button':
-                         new_upgrade_pool[i].draw(screen, 352, 420, massage=None, action=upgrade_whip, font_size=30)
+                        new_upgrade_pool[i].draw(screen, 352, 420, massage=None, action=upgrade_whip, font_size=30)
                     elif new_upgrade_pool[i].name == 'garlic_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 420, massage=None, action=upgrade_garlic, font_size=30)
-                    # else:
-                    #     new_upgrade_pool[i].draw(screen, 352, 420, massage='Hi')
         elif len(new_upgrade_pool) == 2:
             for i in range(2):
                 if i == 0:
@@ -357,18 +326,16 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
                     elif new_upgrade_pool[i].name == 'hp_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_hp, font_size=30)
                     elif new_upgrade_pool[i].name == 'whip_upgrade_button':
-                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_whip, font_size=30)
+                        new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_whip, font_size=30)
                     elif new_upgrade_pool[i].name == 'garlic_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_garlic, font_size=30)
-                    # else:
-                    #     new_upgrade_pool[i].draw(screen, 352, 140, massage='Hi')
                 elif i == 1:
                     if new_upgrade_pool[i].name == 'speed_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_speed, font_size=30)
                     elif new_upgrade_pool[i].name == 'hp_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_hp, font_size=30)
                     elif new_upgrade_pool[i].name == 'whip_upgrade_button':
-                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_whip, font_size=30)
+                        new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_whip, font_size=30)
                     elif new_upgrade_pool[i].name == 'garlic_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 280, massage=None, action=upgrade_garlic, font_size=30)
         elif len(new_upgrade_pool) == 1:
@@ -379,10 +346,11 @@ def upgrades_menu(screen, bats, bats_boss, zombies, player, whip, magic_wand, ga
                     elif new_upgrade_pool[i].name == 'hp_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_hp, font_size=30)
                     elif new_upgrade_pool[i].name == 'whip_upgrade_button':
-                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_whip, font_size=30)
+                        new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_whip, font_size=30)
                     elif new_upgrade_pool[i].name == 'garlic_upgrade_button':
                         new_upgrade_pool[i].draw(screen, 352, 140, massage=None, action=upgrade_garlic, font_size=30)
     else:
         return_to_game = Button(button_background, button_background, 'return_to_game_button')
-        return_to_game.draw(screen, 507, 461, 'Продолжить без улучшений', shift=(45, 23), font_size=20, action=max_upgrades)
+        return_to_game.draw(screen, 507, 461, 'Продолжить без улучшений', shift=(45, 23), font_size=20,
+                            action=max_upgrades)
         print_text(screen, 'Максимальное количество улучшений', 372, 280, font_color=WHITE)
