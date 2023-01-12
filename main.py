@@ -62,7 +62,7 @@ def show_game():
         bat = Bat(screen)
         bats.add(bat)
 
-    if len(zombies) < (20 + ((pygame.time.get_ticks()//1000)//60) * 5):
+    if len(zombies) < (20 + ((pygame.time.get_ticks()//1000)//60) * 5) and pygame.time.get_ticks() > 120000:
         zombie = Zombie(screen)
         zombies.add(zombie)
 
