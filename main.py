@@ -122,7 +122,7 @@ def show_game():
     lvl_up(screen, player, bats, bats_boss, zombies, whip, garlic)
 
     check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group, menu_game_switch, whip,
-                other_weapon_group)
+                other_weapon_group, zombies, garlic)
 
     game_UI(screen, player)
 
@@ -133,6 +133,8 @@ def show_game():
 def show_menu():
     start_button = Button(button_background, button_background, 'start_button')
     quit_button = Button(button_background_red, button_background_red, 'start_button')
+    def ex():
+        exit()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -141,7 +143,7 @@ def show_menu():
     screen.blit(menu_background, (0, 0))
     screen.blit(pygame.image.load('img/title.png'), (500, 50))
     start_button.draw(screen, 525, 275, 'Начать', menu_game_switch)
-    quit_button.draw(screen, 525, 375, 'Выйти', shift=(80, 10), action=exit)
+    quit_button.draw(screen, 525, 375, 'Выйти', shift=(80, 10), action=ex)
     pygame.display.update()
     clock.tick(60)
 

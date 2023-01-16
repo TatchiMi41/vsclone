@@ -101,15 +101,18 @@ def print_text(screen, massage, x, y, font_color=(0, 0, 0), font_type='timesnewr
 
 
 def check_alive(player, bats, bats_boss, screen, player_group, whip_group, drop_group, game_switch, whip,
-                other_weapon_group):
+                other_weapon_group, zombies, garlic):
     if player.health <= 0:
         after_death_menu(screen, player)
         player.kill()
         bats.empty()
+        zombies.empty()
         whip_group.empty()
         bats_boss.empty()
         drop_group.empty()
         other_weapon_group.empty()
+        garlic.activate = False
+
 
         def restart_game():
             nonlocal player, player_group, whip
