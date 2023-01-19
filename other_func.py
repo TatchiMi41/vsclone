@@ -41,7 +41,10 @@ class Button:
 def game_UI(screen, player):
     draw_lvl_bar(screen, player)
     screen.blit(pygame.transform.scale(lvl_background, (50, 50)), (1230, 0))
-    print_text(screen, f'{player.lvl}', 1248, 8, font_size=30, font_color=SEA_GREEN)
+    if player.lvl < 10:
+        print_text(screen, f'{player.lvl}', 1248, 8, font_size=30, font_color=SEA_GREEN)
+    else:
+        print_text(screen, f'{player.lvl}', 1241, 8, font_size=30, font_color=SEA_GREEN)
 
 
 def collide_weapon_and_enemy(player, enemy, weapon, screen, drop_group):
@@ -151,10 +154,10 @@ def draw_lvl_bar(screen, player):
     lvl_bar_height = 20
     lvl_bar_width = WIDTH
     fill = (player.kill_count_exp / player.exp) * lvl_bar_width
-    outline_rect = pygame.Rect(0, 0, lvl_bar_width, lvl_bar_height)
+    outline_rect = pygame.image.load(f'img/lvlbar.png')
     fill_rect = pygame.Rect(0, 0, fill, lvl_bar_height)
     pygame.draw.rect(screen, SEA_GREEN, fill_rect)
-    pygame.draw.rect(screen, BLACK, outline_rect, 2)
+    screen.blit(outline_rect, (0, 0))
 
 
 def after_death_menu(screen, player, ):

@@ -46,7 +46,7 @@ class Bat_boss(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = random.choice([random.randint(1281, 1300), random.randint(1159, 1279) - 1280])
         self.rect.centery = random.choice([random.randint(721, 760), random.randint(619, 719) - 720])
-        self.health = 1000 * player.lvl
+        self.health = 1000 * player.lvl * (pygame.time.get_ticks()//1000//60)
         self.damage = 1
         self.exp = 100
         self.rank = 'common'

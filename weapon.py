@@ -86,7 +86,7 @@ class Whip(pygame.sprite.Sprite):
 
 
 class Garlic(pygame.sprite.Sprite):
-    def __init__(self, screen, player):
+    def __init__(self, screen):
         super(Garlic, self).__init__()
         self.title = 'Garlic'
         self.activate = False
@@ -94,12 +94,12 @@ class Garlic(pygame.sprite.Sprite):
         self.screen = screen
         self.image = garlic_spite
         self.rect = self.image.get_bounding_rect()
-        self.rect.centerx, self.rect.centery = player.pos
         self.damage = 100
         self.lvl = 0
 
     def update(self, player, anim_count_garlic):
-        self.rect.centerx, self.rect.centery = player.pos
+        self.rect.centerx = player.pos[0] - 3
+        self.rect.centery = player.pos[1]
         if 0 <= anim_count_garlic < 11 or 80 < anim_count_garlic < 101:
             self.image.set_alpha(90)
             self.damage = 100
